@@ -11,6 +11,7 @@ data3 =data[1000:1500]
 data4 =data[1500:2000]
 data5 = data[2000:2500]
 data6 = data[2500:3000]
+data.dropna(inplace=True) # Remove rows with missing values
 
 # Gender
 gender = {
@@ -28,6 +29,32 @@ race = {
     "Two-or-more": 3,
     "Other": 4,}
 data ["race"] = data["race"].map(race)
+
+#SES_Quartile
+#Parental education
+edu= { 
+    "HS": 0,
+    "<HS": 1,
+    "Bachelors+": 2,
+    "SomeCollege": 3,
+
+
+}
+#schooltype
+schooltype = {
+    "public": 0,
+    "private": 1,
+}
+
+#place living
+
+place = {
+    "surburban": 0,
+    "city": 1,
+    "town": 3,
+    "Rural": 4,
+}
+
 def chat_showdata():
     print ("can you describe your personality in 1 word so that I can understand you better, thank you?")
     a = input ("")
