@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 
 data = pd.read_csv(r"C:\Users\Do Pham Tuan\.cache\kagglehub\datasets\neuralsorcerer\student-performance\versions\1\test.csv")
-data = data.head(500)
+data1 =data.head(500)
 
 def chat_showdata():
     print ("can you describe your personality in 1 word so that I can understand you better, thank you?")
