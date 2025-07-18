@@ -8,11 +8,7 @@ from sklearn.model_selection import train_test_split as trte
 # data 
 data = pd.read_csv(r"C:\Users\Do Pham Tuan\.cache\kagglehub\datasets\neuralsorcerer\student-performance\versions\1\test.csv")
 data1 =data.head(500)
-data2 =data[500:1000]
-data3 =data[1000:1500]
-data4 =data[1500:2000]
-data5 = data[2000:2500]
-data6 = data[2500:3000]
+
 
 data = data.dropna()# Remove rows with missing values
 
@@ -66,7 +62,7 @@ data["Locale"] = data["Locale"].map(place)
 
 X = data.drop("GPA", axis=1) 
 Y = data["GPA"]
-X_train,X_test, Y_train, Y_test = trtey(X, Y, test_size=0.2, random_state=42)
+X_train,X_test, Y_train, Y_test = trte(X, Y, test_size=0.2, random_state=42)
 
 def chat_showdata():
 
@@ -83,9 +79,10 @@ def chat_showdata():
 chat_showdata()
 def train_model():
     
-    model = mp
+    model = mp()
     pred = model.fit(X_train, Y_train)
-    pred = model.predict(X_test)
+    v = pred.predict(X_test)
+    print(v)
 
     
 train_model()
