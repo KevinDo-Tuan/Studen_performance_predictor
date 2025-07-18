@@ -6,7 +6,7 @@ import sklearn as sk
 import sklearn.ensemble as mode
 from sklearn.model_selection import train_test_split as trte
 # data 
-data = pd.read_csv(r"C:\Users\Do Pham Tuan\.cache\kagglehub\datasets\neuralsorcerer\student-performance\versions\1\test.csv")
+data = pd.read_csv(r"C:\Users\Do Pham Tuan\.cache\kagglehub\datasets\neuralsorcerer\student-performance\versions\1\train.csv")
 data1 =data.head(500)
 
 
@@ -29,7 +29,7 @@ race = {
     "White": 1,
     "Hispanic": 2,
     "Two-or-more": 3,
-    "Other": 4,}
+    "Asian": 4,}
 data ["Race"] = data["Race"].map(race)
 
 #SES_Quartile
@@ -46,16 +46,16 @@ data["ParentalEducation"]= data["ParentalEducation"].map(edu)
 
 #schooltype
 schooltype = {
-    "public": 0,
-    "private": 1,
+    "Public": 0,
+    "Private": 1,
 }
 data["SchoolType"] = data["SchoolType"].map(schooltype)
 #place living
 
 place = {
-    "surburban": 0,
-    "city": 1,
-    "town": 3,
+    "Suburban": 0,
+    "City": 1,
+    "Town": 3,
     "Rural": 4,
 }
 data["Locale"] = data["Locale"].map(place)
@@ -67,7 +67,7 @@ X_train,X_test, Y_train, Y_test = trte(X, Y, test_size=0.2, random_state=42)
 def chat_showdata():
 
     
-    print("start with the datset?")
+    print("start with the dataset?")
     c = input("")
     if c.lower()[0] == "y": 
         print("Here is the dataset:")
@@ -77,9 +77,10 @@ def chat_showdata():
         plt.show()
     
 chat_showdata()
+
 def train_model():
     
-    model = mode.RandomForestRegressor
+    model = mode.RandomForestRegressor()
     model.fit( X_train, Y_train)
     v = model.predict(X_test)
     print(v)
