@@ -3,7 +3,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import sklearn as sk
-from sklearn.ensemble import HistGradientBoostingClassifier as mp
+import sklearn.ensemble as mode
 from sklearn.model_selection import train_test_split as trte
 # data 
 data = pd.read_csv(r"C:\Users\Do Pham Tuan\.cache\kagglehub\datasets\neuralsorcerer\student-performance\versions\1\test.csv")
@@ -79,9 +79,9 @@ def chat_showdata():
 chat_showdata()
 def train_model():
     
-    model = mp()
-    pred = model.fit(X_train, Y_train)
-    v = pred.predict(X_test)
+    model = mode.RandomForestRegressor
+    model.fit( X_train, Y_train)
+    v = model.predict(X_test)
     print(v)
 
     
