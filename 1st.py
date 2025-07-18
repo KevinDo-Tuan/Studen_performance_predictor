@@ -2,6 +2,7 @@ import kagglehub as kg
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import sklearn as sk
 
 # data 
 data = pd.read_csv(r"C:\Users\Do Pham Tuan\.cache\kagglehub\datasets\neuralsorcerer\student-performance\versions\1\test.csv")
@@ -19,7 +20,7 @@ gender = {
     "Male" :1,
 
 }
-data["gender"] = data["gender"].map(gender)
+data["Gender"] = data["Gender"].map(gender)
 
 #Race
 race = {
@@ -28,7 +29,7 @@ race = {
     "Hispanic": 2,
     "Two-or-more": 3,
     "Other": 4,}
-data ["race"] = data["race"].map(race)
+data ["Race"] = data["Race"].map(race)
 
 #SES_Quartile
 #Parental education
@@ -40,12 +41,14 @@ edu= {
 
 
 }
+data["ParentalEducation"]= data["ParentalEducation"].map(edu)
+
 #schooltype
 schooltype = {
     "public": 0,
     "private": 1,
 }
-
+data["SchoolType"] = data["SchoolType"].map(schooltype)
 #place living
 
 place = {
@@ -54,6 +57,7 @@ place = {
     "town": 3,
     "Rural": 4,
 }
+data["Locale"] = data["Locale"].map(place)
 
 def chat_showdata():
     print ("can you describe your personality in 1 word so that I can understand you better, thank you?")
@@ -83,6 +87,14 @@ def chat_showdata():
             plt.show()
     
 chat_showdata()
+def train_model():
+    X_train = data.drop("gpa")
+    Y_train = data["gpa"]
+    model = sk.neural_network.MLPRegressor(hidden_layer_sizes=(100, 50), max_iter=500)
+    model.fit(X_train, Y_train)
+
+    
+train_model()
 
 
 
