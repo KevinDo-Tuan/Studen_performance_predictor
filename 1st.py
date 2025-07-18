@@ -81,8 +81,32 @@ chat_showdata()
 def train_model():
     
     model = mode.RandomForestRegressor(n_estimators=10, max_depth=10)
+    
     model.fit( X_train, Y_train)
+    
+    print ("data is trained")
+    print ("type data for: Age," \
+    "Current grade" \
+    "Gender (Male or Female)" \
+    "Race (White / Hispanic / Black / Two-or-more / Asian)" \
+    "SES_Quartile," \
+    "ParentalEducation," \
+    "SchoolType,Locale," \
+    "TestScore_Math," \
+    "TestScore_Reading," \
+    "TestScore_Science," \
+    "GPA,AttendanceRate," \
+    "StudyHours," \
+    "InternetAccess," \
+    "Extracurricular," \
+    "PartTimeJob," \
+    "ParentSupport," \
+    "Romantic," \
+    "FreeTime," \
+    "GoOut")
+
     v = model.predict(X_test)
+    
     print(v)
 
     
