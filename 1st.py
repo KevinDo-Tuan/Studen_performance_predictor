@@ -3,8 +3,8 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import sklearn as sk
-from sklearn.neural_network import MLPRegressor as mp
-
+from sklearn.ensemble import HistGradientBoostingClassifier as mp
+from sklearn.model_selection import train_test_split as trte
 # data 
 data = pd.read_csv(r"C:\Users\Do Pham Tuan\.cache\kagglehub\datasets\neuralsorcerer\student-performance\versions\1\test.csv")
 data1 =data.head(500)
@@ -14,11 +14,10 @@ data4 =data[1500:2000]
 data5 = data[2000:2500]
 data6 = data[2500:3000]
 
-data.dropna(inplace=True) # Remove rows with missing values
+data = data.dropna()# Remove rows with missing values
 
 
-X_train = data.drop("GPA", axis=1) 
-Y_train = data["GPA"]
+
 
 # Gender
 gender = {
@@ -65,6 +64,10 @@ place = {
 }
 data["Locale"] = data["Locale"].map(place)
 
+X = data.drop("GPA", axis=1) 
+Y = data["GPA"]
+X_train,X_test, Y_train, Y_test = trtey(X, Y, test_size=0.2, random_state=42)
+
 def chat_showdata():
 
     
@@ -73,15 +76,16 @@ def chat_showdata():
     if c.lower()[0] == "y": 
         print("Here is the dataset:")
         print(data)
-        print(data["GPA"])
+        
         sns.pairplot(data1) 
         plt.show()
     
 chat_showdata()
 def train_model():
     
-    model = mp(hidden_layer_sizes=(100, 50), max_iter=500, random_state=42)
-    model.fit(X_train, Y_train)
+    model = mp
+    pred = model.fit(X_train, Y_train)
+    pred = model.predict(X_test)
 
     
 train_model()
