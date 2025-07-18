@@ -3,6 +3,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import sklearn as sk
+from sklearn.neural_network import MLPRegressor as mp
 
 # data 
 data = pd.read_csv(r"C:\Users\Do Pham Tuan\.cache\kagglehub\datasets\neuralsorcerer\student-performance\versions\1\test.csv")
@@ -12,8 +13,12 @@ data3 =data[1000:1500]
 data4 =data[1500:2000]
 data5 = data[2000:2500]
 data6 = data[2500:3000]
+
 data.dropna(inplace=True) # Remove rows with missing values
 
+
+X_train = data.drop("GPA", axis=1) 
+Y_train = data["GPA"]
 
 # Gender
 gender = {
@@ -68,19 +73,14 @@ def chat_showdata():
     if c.lower()[0] == "y": 
         print("Here is the dataset:")
         print(data)
+        print(data["GPA"])
         sns.pairplot(data1) 
-        sns.pairplot(data2)
-        sns.pairplot(data3)
-        sns.pairplot(data4)
-        sns.pairplot(data5)
-        sns.pairplot(data6)      # start changing the dataset to plot it on sns
         plt.show()
     
 chat_showdata()
 def train_model():
-    X_train = data.drop("GPA")
-    Y_train = data["GPA"]
-    model = sk.random_forest.RandomForestRegressor(n_estimators=100, random_state=42)
+    
+    model = mp(hidden_layer_sizes=(100, 50), max_iter=500, random_state=42)
     model.fit(X_train, Y_train)
 
     
