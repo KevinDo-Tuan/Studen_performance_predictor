@@ -73,14 +73,14 @@ def chat_showdata():
         print("Here is the dataset:")
         print(data)
         
-        sns.pairplot(data1) 
-        plt.show()
+        #sns.pairplot(data1) 
+        #plt.show()
     
 chat_showdata()
 
 def train_model():
     
-    model = mode.RandomForestRegressor()
+    model = mode.RandomForestRegressor(n_estimators=10, max_depth=10)
     model.fit( X_train, Y_train)
     v = model.predict(X_test)
     print(v)
