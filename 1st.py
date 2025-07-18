@@ -14,6 +14,7 @@ data5 = data[2000:2500]
 data6 = data[2500:3000]
 data.dropna(inplace=True) # Remove rows with missing values
 
+
 # Gender
 gender = {
     "Female" :0,
@@ -60,37 +61,26 @@ place = {
 data["Locale"] = data["Locale"].map(place)
 
 def chat_showdata():
-    print ("can you describe your personality in 1 word so that I can understand you better, thank you?")
-    a = input ("")
 
-    if a is not float:
-        print("Do you want to predict student performance?")
-    else:
-        print( "please enter a valid word")
-    b = input("")
     
-    transform = b.lower()
-    
-    if transform[0] == "y":
-        print("start with the datset?")
-        c = input("")
-        if c.lower()[0] == "y": 
-            print("Here is the dataset:")
-            print(data)
-            
-            sns.pairplot(data1) 
-            sns.pairplot(data2)
-            sns.pairplot(data3)
-            sns.pairplot(data4)
-            sns.pairplot(data5)
-            sns.pairplot(data6)      # start changing the dataset to plot it on sns
-            plt.show()
+    print("start with the datset?")
+    c = input("")
+    if c.lower()[0] == "y": 
+        print("Here is the dataset:")
+        print(data)
+        sns.pairplot(data1) 
+        sns.pairplot(data2)
+        sns.pairplot(data3)
+        sns.pairplot(data4)
+        sns.pairplot(data5)
+        sns.pairplot(data6)      # start changing the dataset to plot it on sns
+        plt.show()
     
 chat_showdata()
 def train_model():
     X_train = data.drop("GPA")
     Y_train = data["GPA"]
-    model = sk.neural_network.MLPRegressor(hidden_layer_sizes=(100, 50), max_iter=500)
+    model = sk.random_forest.RandomForestRegressor(n_estimators=100, random_state=42)
     model.fit(X_train, Y_train)
 
     
