@@ -88,8 +88,8 @@ def chat_showdata():
     
 chat_showdata()
 def train_model():
-    X_train = data.drop("gpa")
-    Y_train = data["gpa"]
+    X_train = data.drop("GPA")
+    Y_train = data["GPA"]
     model = sk.neural_network.MLPRegressor(hidden_layer_sizes=(100, 50), max_iter=500)
     model.fit(X_train, Y_train)
 
