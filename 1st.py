@@ -3,10 +3,11 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import sklearn as sk
-import sklearn.ensemble as mode
+import sklearn.neural_network as mode
 from sklearn.model_selection import train_test_split as trte
 # data 
 data = pd.read_csv(r"C:\Users\Do Pham Tuan\.cache\kagglehub\datasets\neuralsorcerer\student-performance\versions\1\train.csv")
+
 data1 =data.head(500)
 
 
@@ -80,7 +81,7 @@ chat_showdata()
 
 def train_model():
     
-    model = mode.RandomForestRegressor(n_estimators=10, max_depth=10)
+    model = mode.MLPRegressor(hidden_layer_sizes=(100, 50), max_iter=500, random_state=42)
     
     model.fit( X_train, Y_train)
     
@@ -90,8 +91,9 @@ def train_model():
     "Gender (Male or Female)" \
     "Race (White / Hispanic / Black / Two-or-more / Asian)" \
     "SES_Quartile," \
-    "ParentalEducation," \
-    "SchoolType,Locale," \
+    "ParentalEducation (HS/SomeCollege/Bachelors+/<HS)," \
+    "SchoolType (public or private)," \
+    "Locale (Suburban, City, Rural, Town)," \
     "TestScore_Math," \
     "TestScore_Reading," \
     "TestScore_Science," \
