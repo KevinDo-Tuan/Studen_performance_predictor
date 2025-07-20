@@ -1,1 +1,1 @@
-# 1st-ml-diabetes
+# Student performance predictor
