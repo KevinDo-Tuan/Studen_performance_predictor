@@ -1,14 +1,15 @@
 from xml.parsers.expat import model
-import kagglehub as kg
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-import sklearn as sk
-import sklearn.neural_network as mode
+import sklearn.ensemble as mode
 from sklearn.model_selection import train_test_split as trte
 from sklearn.tree import plot_tree
+from sklearn.metrics import r2_score, mean_absolute_error
+from tqdm import tqdm
 # data 
-data = pd.read_csv(r"C:\Users\dopha\.cache\kagglehub\datasets\neuralsorcerer\student-performance\versions\1\train.csv")
+data = pd.read_csv(r"C:\Users\Do Pham Tuan\.cache\kagglehub\datasets\neuralsorcerer\student-performance\versions\1\train.csv")
+
 
 data1 =data.head(500)
 
@@ -79,18 +80,20 @@ def chat_showdata():
         nan = data[data.isna().any(axis=1)]
         print(nan)
         
-        #sns.pairplot(data1) 
-        #plt.show()
+        sns.pairplot(data1) 
+        plt.show()
     
 chat_showdata()
 
 def train_model():
     
-    model = mode.MLPRegressor(hidden_layer_sizes=(100, 50), max_iter=500, random_state=42)
+    model = mode.RandomForestRegressor(n_estimators=100, random_state=42)
     
     print("Training the model...")
 
-    model.fit( X_train, Y_train)
+    for i in tqdm(range(1, n_estimators + 1), desc="Training Trees"):
+        model.n_estimators = i
+        model.fit(X_train, Y_train)
     
     print ("data is trained")
     print ("type data for: Age," \
@@ -113,12 +116,21 @@ def train_model():
     "Romantic," \
     "FreeTime," \
     "GoOut")
-
+    print ("test data:", X_test)
     v = model.predict(X_test)
+    print("prediction:", v)
+    
+     # Calculate R² score and MAE
+    r2 = r2_score(Y_test, v)
+    mae = mean_absolute_error(Y_test, v)
+    print(f"R² score: {r2:.3f}")
+    print(f"Mean Absolute Error: {mae:.3f}")
+    
+    # plot diagram
     plt.figure(figsize=(20, 10))
     plot_tree(model.estimators_[0], feature_names=X_train.columns, filled=True)
     plt.show()
-    print(v)
+    
 
     
 train_model()
