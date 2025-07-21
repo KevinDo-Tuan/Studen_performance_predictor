@@ -87,11 +87,11 @@ chat_showdata()
 
 def train_model():
     
-    model = mode.RandomForestRegressor(n_estimators=100, random_state=42)
-    n_estimators = 100
+    model = mode.RandomForestRegressor(n_estimators=30, random_state=42)
+    n_estimators = 30
     print("Training the model...")
 
-    for i in tqdm(range(1, n_estimators + 1), desc="Training Trees"):
+    for i in tqdm(range(1, n_estimators + 1), desc="Training model"):
         model.n_estimators = i
         model.fit(X_train, Y_train)
     
