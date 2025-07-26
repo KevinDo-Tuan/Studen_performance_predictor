@@ -7,6 +7,7 @@ from sklearn.model_selection import train_test_split as trte
 from sklearn.tree import plot_tree
 from sklearn.metrics import r2_score, mean_absolute_error
 from tqdm import tqdm
+from sklearn.neural_network import MLPRegressor
 # data 
 data = pd.read_csv(r"C:\Users\Do Pham Tuan\.cache\kagglehub\datasets\neuralsorcerer\student-performance\versions\1\train.csv")
 
@@ -66,6 +67,7 @@ place = {
 data["Locale"] = data["Locale"].map(place)
 
 X = data.drop("GPA", axis=1) 
+X = data[:100000]
 Y = data["GPA"]
 X_train,X_test, Y_train, Y_test = trte(X, Y, test_size=0.2, random_state=42)
 
@@ -78,7 +80,7 @@ def chat_showdata():
         print("Here is the dataset:")
         print(data)
         nan = data[data.isna().any(axis=1)]
-        print(nan)
+        print("row with not a value", nan)
         
         sns.pairplot(data1) 
         plt.show()
@@ -86,53 +88,25 @@ def chat_showdata():
 chat_showdata()
 
 def train_model():
-    
-    model = mode.RandomForestRegressor(n_estimators=5, random_state=42)
-    n_estimators = 20
-    print("Training the model...")
-
-    for i in tqdm(range(1, n_estimators + 1), desc="Training model"):
-        model.n_estimators = i
-        model.fit(X_train, Y_train)
-    
-    print ("data is trained")
-    print ("type data for: Age," \
-    "Current grade" \
-    "Gender (Male or Female)" \
-    "Race (White / Hispanic / Black / Two-or-more / Asian)" \
-    "SES_Quartile," \
-    "ParentalEducation (HS/SomeCollege/Bachelors+/<HS)," \
-    "SchoolType (public or private)," \
-    "Locale (Suburban, City, Rural, Town)," \
-    "TestScore_Math," \
-    "TestScore_Reading," \
-    "TestScore_Science," \
-    "GPA,AttendanceRate," \
-    "StudyHours," \
-    "InternetAccess," \
-    "Extracurricular," \
-    "PartTimeJob," \
-    "ParentSupport," \
-    "Romantic," \
-    "FreeTime," \
-    "GoOut")
-    print ("test data:", X_test)
+    model = MLPRegressor(hidden_layer_sizes=(20,), max_iter=500, random_state=42)
+    print("Training the neural network model...")
+    model.fit(X_train, Y_train)
+    print("data is trained")
+    print("test data:", X_test)
     v = model.predict(X_test)
     print("prediction:", v)
-    
-     # Calculate R² score and MAE
     r2 = r2_score(Y_test, v)
     mae = mean_absolute_error(Y_test, v)
     print(f"R² score: {r2:.3f}")
     print(f"Mean Absolute Error: {mae:.3f}")
-    
-    # plot diagram
-    plt.figure(figsize=(20, 10))
-    plot_tree(model.estimators_[0], feature_names=X_train.columns, filled=True)
+    # plot loss curve instead of tree
+    plt.figure(figsize=(10, 5))
+    plt.plot(model.loss_curve_)
+    plt.title("MLPRegressor Loss Curve")
+    plt.xlabel("Iterations")
+    plt.ylabel("Loss")
     plt.show()
-    
 
-    
 train_model()
 
 
