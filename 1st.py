@@ -4,7 +4,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import sklearn.ensemble as mode
 from sklearn.model_selection import train_test_split as trte
-from sklearn.tree import plot_tree
+
 from sklearn.metrics import r2_score, mean_absolute_error
 from tqdm import tqdm
 from sklearn.neural_network import MLPRegressor
@@ -12,14 +12,7 @@ import optuna as optu
 # data 
 data = pd.read_csv(r"C:\Users\Do Pham Tuan\.cache\kagglehub\datasets\neuralsorcerer\student-performance\versions\1\train.csv")
 
-
-data1 =data.head(500)
-
-
 data = data.dropna()# Remove rows with missing values
-
-
-
 
 # Gender
 gender = {
@@ -46,8 +39,6 @@ edu= {
     "<HS": 1,
     "Bachelors+": 2,
     "SomeCollege": 3,
-
-
 }
 data["ParentalEducation"]= data["ParentalEducation"].map(edu)
 
@@ -68,29 +59,19 @@ place = {
 data["Locale"] = data["Locale"].map(place)
 
 X = data.drop("GPA", axis=1) 
-X = data[:100000]
+
 Y = data["GPA"]
+
 X_train,X_test, Y_train, Y_test = trte(X, Y, test_size=0.2, random_state=42)
 
-def chat_showdata():
-
-    
-    print("start with the dataset? (yes/no)")
-    c = input("")
-    if c.lower()[0] == "y": 
-        print("Here is the dataset:")
-        print(data)
-        nan = data[data.isna().any(axis=1)]
-        print("row with not a value", nan)
-        
-        sns.pairplot(data1) 
-        plt.show()
-    
-chat_showdata()
+#def chat_showdata(): <-- Uncomment this line to show the dataset and pairplot
+    #nan = data[data.isna().any(axis=1)]
+    #print("row with not a value:", nan)    
+#chat_showdata() <-- Uncomment this line to show the dataset and pairplot
 def finding_parameters(trial):
-    hidden_layer_sizes = trial.suggest_int("hidden_layer_sizes", 10, 20)
-    max_iter = trial.suggest_int("max_iter", 100, 20)
-    random_state = trial.suggest_int("random_state", 1, 20)
+    hidden_layer_sizes = trial.suggest_int("hidden_layer_sizes", 10, 50)
+    max_iter = trial.suggest_int("max_iter", 10, 2500)
+    random_state = trial.suggest_int("random_state", 10, 50)
 
     model = MLPRegressor(hidden_layer_sizes=(hidden_layer_sizes,), max_iter=max_iter, random_state=random_state)
     model.fit(X_train, Y_train)
@@ -98,8 +79,9 @@ def finding_parameters(trial):
     r2 = r2_score(Y_test, v)
     return r2
 
+print ("finding parameters...")
 study = optu.create_study(direction="maximize")
-optu.optimize(finding_parameters, n_trials=30)
+study.optimize(finding_parameters, n_trials=30)
 
 print("Best parameters found:", study.best_params)
 
