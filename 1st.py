@@ -64,14 +64,15 @@ Y = data["GPA"]
 
 X_train,X_test, Y_train, Y_test = trte(X, Y, test_size=0.2, random_state=42)
 
-#def chat_showdata(): <-- Uncomment this line to show the dataset and pairplot
-    #nan = data[data.isna().any(axis=1)]
-    #print("row with not a value:", nan)    
-#chat_showdata() <-- Uncomment this line to show the dataset and pairplot
+def check_data():
+    nan = data[data.isna().any(axis=1)]
+    print("row with not a value:", nan)    
+check_data() 
+
 def finding_parameters(trial):
-    hidden_layer_sizes = trial.suggest_int("hidden_layer_sizes", 10, 50)
-    max_iter = trial.suggest_int("max_iter", 10, 2500)
-    random_state = trial.suggest_int("random_state", 10, 50)
+    hidden_layer_sizes = trial.suggest_int("hidden_layer_sizes", 10, 20)
+    max_iter = trial.suggest_int("max_iter", 10, 20)
+    random_state = trial.suggest_int("random_state", 10, 20)
 
     model = MLPRegressor(hidden_layer_sizes=(hidden_layer_sizes,), max_iter=max_iter, random_state=random_state)
     model.fit(X_train, Y_train)
