@@ -8,6 +8,7 @@ from sklearn.tree import plot_tree
 from sklearn.metrics import r2_score, mean_absolute_error
 from tqdm import tqdm
 from sklearn.neural_network import MLPRegressor
+import optuna as optu
 # data 
 data = pd.read_csv(r"C:\Users\Do Pham Tuan\.cache\kagglehub\datasets\neuralsorcerer\student-performance\versions\1\train.csv")
 
@@ -86,28 +87,21 @@ def chat_showdata():
         plt.show()
     
 chat_showdata()
+def finding_parameters(trial):
+    hidden_layer_sizes = trial.suggest_int("hidden_layer_sizes", 10, 20)
+    max_iter = trial.suggest_int("max_iter", 100, 20)
+    random_state = trial.suggest_int("random_state", 1, 20)
 
-def train_model():
-    model = MLPRegressor(hidden_layer_sizes=(20,), max_iter=500, random_state=42)
-    print("Training the neural network model...")
+    model = MLPRegressor(hidden_layer_sizes=(hidden_layer_sizes,), max_iter=max_iter, random_state=random_state)
     model.fit(X_train, Y_train)
-    print("data is trained")
-    print("test data:", X_test)
     v = model.predict(X_test)
-    print("prediction:", v)
     r2 = r2_score(Y_test, v)
-    mae = mean_absolute_error(Y_test, v)
-    print(f"R² score: {r2:.3f}")
-    print(f"Mean Absolute Error: {mae:.3f}")
-    # plot loss curve instead of tree
-    plt.figure(figsize=(10, 5))
-    plt.plot(model.loss_curve_)
-    plt.title("MLPRegressor Loss Curve")
-    plt.xlabel("Iterations")
-    plt.ylabel("Loss")
-    plt.show()
+    return r2
 
-train_model()
+study = optu.create_study(direction="maximize")
+optu.optimize(finding_parameters, n_trials=10)
+
+
 
 
 
