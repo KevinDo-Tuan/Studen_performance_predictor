@@ -78,7 +78,7 @@ def finding_parameters(trial):
     v = model.predict(X_test)
     r2 = r2_score(Y_test, v)
     return r2
-finding_parameters(trial=None)  # Dummy call to define the function
+
 
 print ("finding parameters...")
 study = optu.create_study(direction="maximize")
