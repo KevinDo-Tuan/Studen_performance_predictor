@@ -78,6 +78,7 @@ def finding_parameters(trial):
     v = model.predict(X_test)
     r2 = r2_score(Y_test, v)
     return r2
+finding_parameters()
 
 print ("finding parameters...")
 study = optu.create_study(direction="maximize")
@@ -85,27 +86,7 @@ study.optimize(finding_parameters, n_trials=30)
 
 print("Best parameters found:", study.best_params)
 
-def train_model():
-    model = MLPRegressor(hidden_layer_sizes=(20,), max_iter=500, random_state=42)
-    print("Training the neural network model...")
-    model.fit(X_train, Y_train)
-    print("data is trained")
-    print("test data:", X_test)
-    v = model.predict(X_test)
-    print("prediction:", v)
-    r2 = r2_score(Y_test, v)
-    mae = mean_absolute_error(Y_test, v)
-    print(f"R² score: {r2:.3f}")
-    print(f"Mean Absolute Error: {mae:.3f}")
-    # plot loss curve instead of tree
-    plt.figure(figsize=(10, 5))
-    plt.plot(model.loss_curve_)
-    plt.title("MLPRegressor Loss Curve")
-    plt.xlabel("Iterations")
-    plt.ylabel("Loss")
-    plt.show()
 
-train_model()
 
 
 
