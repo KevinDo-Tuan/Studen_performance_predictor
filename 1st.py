@@ -69,8 +69,29 @@ def check_data():
     print("row with not a value:", nan)    
 check_data() 
 
+def finding_parameters(trial):
+    hidden_layer_sizes = trial.suggest_int("hidden_layer_sizes", 10, 50)
+    max_iter = trial.suggest_int("max_iter", 10, 50)
+    random_state = trial.suggest_int("random_state", 10, 50)
+
+    model = MLPRegressor(hidden_layer_sizes=(hidden_layer_sizes,), max_iter=max_iter, random_state=random_state)
+    model.fit(X_train, Y_train)
+    v = model.predict(X_test)
+    r2 = r2_score(Y_test, v)
+    return r2
+
+
+print ("finding parameters...")
+study = optu.create_study(direction="maximize")
+study.optimize(finding_parameters, n_trials=30)
+
+print("Best parameters found:", study.best_params)
+
 def train_model():
-    model = MLPRegressor(hidden_layer_sizes=(14, ), max_iter=18, random_state=11)
+    model = MLPRegressor(study.best_params['hidden_layer_sizes'],
+                         max_iter=study.best_params['max_iter'],
+                         random_state=study.best_params['random_state'])
+    
     print("Training the neural network model...")
     model.fit(X_train, Y_train)
     print("data is trained")
@@ -79,15 +100,21 @@ def train_model():
     print("prediction:", v)
     r2 = r2_score(Y_test, v)
     mae = mean_absolute_error(Y_test, v)
-    print(f"R² score: {r2:.3f}")
-    print(f"Mean Absolute Error: {mae:.3f}")
+    print(f"R² score: ", r2)
+    print(f"Mean Absolute Error", mae)
 
-    # plot loss curve instead of tree
-    plt.figure(figsize=(10, 5))
-    plt.plot(model.loss_curve_)
-    plt.title("MLPRegressor Loss Curve")
-    plt.xlabel("Iterations")
-    plt.ylabel("Loss")
+
+
+    fig, ax = plt.subplots()
+    ax.axis('off')
+    table_data = [
+        ["Metric", "Value"],
+        ["R² Score", f"{r2:.4f}"],
+        ["Mean Absolute Error", f"{mae:.4f}"]
+    ]
+    table = ax.table(cellText=table_data, loc='center', cellLoc='center')
+    table.scale(1, 1.5)
+    plt.title("Model Evaluation Metrics")
     plt.show()
 
 train_model()
