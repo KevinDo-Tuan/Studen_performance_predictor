@@ -129,9 +129,15 @@ def train_model():
     plt.tight_layout()
     plt.show()
 
-train_model()
+    return model
+def save_model(model):
+    import joblib
+    joblib.dump(model, "student_performance_model.pkl")
+    print("Model saved as student_performance_model.pkl")
+model = train_model()
 
 
+save_model(model)
 
 
 
