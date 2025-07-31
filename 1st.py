@@ -2,10 +2,8 @@ from xml.parsers.expat import model
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-import sklearn.ensemble as mode
 from sklearn.model_selection import train_test_split as trte
 from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
-import joblib
 from sklearn.neural_network import MLPRegressor
 import optuna as optu
 # data 
@@ -61,6 +59,8 @@ X = data.drop("GPA", axis=1)
 X = data.drop("TestScore_Math", axis=1)
 X = data.drop("TestScore_Reading", axis=1)
 X = data.drop("TestScore_Science", axis=1)
+X = data.drop("Gender", axis=1)
+X = data.drop("Race", axis = 1)
 Y = data["GPA"]
 
 X_train,X_test, Y_train, Y_test = trte(X, Y, test_size=0.2, random_state=42)
