@@ -5,8 +5,7 @@ import matplotlib.pyplot as plt
 import sklearn.ensemble as mode
 from sklearn.model_selection import train_test_split as trte
 from sklearn.metrics import r2_score, mean_absolute_error
-
-from tqdm import tqdm
+import joblib
 from sklearn.neural_network import MLPRegressor
 import optuna as optu
 # data 
@@ -131,7 +130,6 @@ def train_model():
 
     return model
 def save_model(model):
-    import joblib
     joblib.dump(model, "student_performance_model.pkl")
     print("Model saved as student_performance_model.pkl")
 model = train_model()
