@@ -4,7 +4,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import sklearn.ensemble as mode
 from sklearn.model_selection import train_test_split as trte
-from sklearn.metrics import r2_score, mean_absolute_error
+from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
 import joblib
 from sklearn.neural_network import MLPRegressor
 import optuna as optu
@@ -89,10 +89,8 @@ study.optimize(finding_parameters, n_trials=5)
 print("Best parameters found:", study.best_params)
 
 def train_model():
-    model = MLPRegressor(study.best_params['hidden_layer_sizes'],
-                         max_iter=study.best_params['max_iter'],
-                         random_state=study.best_params['random_state'])
-    
+    model = MLPRegressor(hidden_layer_sizes=(14,), max_iter=11, random_state=10)
+
     print("Training the neural network model...")
     model.fit(X_train, Y_train)
     print("data is trained")
@@ -101,17 +99,20 @@ def train_model():
     print("prediction:", v)
     r2 = r2_score(Y_test, v)
     mae = mean_absolute_error(Y_test, v)
-    print(f"R² score: ", r2)
-    print(f"Mean Absolute Error", mae)
+    mse = mean_squared_error(Y_test, v)
 
+    print(f"R² score: {r2:.4f}")
+    print(f"Mean Absolute Error: {mae:.4f}")
+    print(f"Mean Squared Error: {mse:.4f}")
 
-
+    # Show metrics as table
     fig, ax = plt.subplots()
     ax.axis('off')
     table_data = [
         ["Metric", "Value"],
         ["R² Score", f"{r2:.4f}"],
-        ["Mean Absolute Error", f"{mae:.4f}"]
+        ["Mean Absolute Error", f"{mae:.4f}"],
+        ["Mean Squared Error", f"{mse:.4f}"]
     ]
     table = ax.table(cellText=table_data, loc='center', cellLoc='center')
     table.scale(1, 1.5)
@@ -128,14 +129,9 @@ def train_model():
     plt.tight_layout()
     plt.show()
 
-    return model
-def save_model(model):
-    joblib.dump(model, "student_performance_model.pkl")
-    print("Model saved as student_performance_model.pkl")
-model = train_model()
 
 
-save_model(model)
+
 
 
 
