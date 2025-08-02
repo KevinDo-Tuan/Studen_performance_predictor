@@ -86,7 +86,7 @@ def finding_parameters(trial):
 
 print ("finding parameters...please wait")
 study = optu.create_study(direction="maximize")
-study.optimize(finding_parameters, n_trials=3)
+study.optimize(finding_parameters, n_trials=2)
 
 print("Best parameters found:", study.best_params)
     
