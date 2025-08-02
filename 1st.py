@@ -67,10 +67,8 @@ X_train,X_test, Y_train, Y_test = trte(X, Y, test_size=0.2, random_state=42)
 def check_data():
     nan = data[data.isna().any(axis=1)]
     print("row with not a value:", nan)    
-check_data() 
-
-
-    
+check_data()
+ 
 def train_model():
     try:
         model = MLPRegressor(hidden_layer_sizes=(23, 12, 53, 34)
