@@ -1,3 +1,3 @@
 # Student performance predictor
 
-# Best parameters found: {'hidden_layer_sizes': 14, 'max_iter': 18, 'random_state': 11}15
+Hi, In this project, I will be creating a student scores predictor based on factors like Gender, Race, Locale, School type.. In order to help the principal assess their student's ability in the most impeccable way.
